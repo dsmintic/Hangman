@@ -1,4 +1,7 @@
+import java.io.CharArrayReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -15,11 +18,14 @@ public class Main {
 //        6. Methods (out of main (static)
 //           6.1 for wining a game
 //           6.2 display Hangman pic - add 1 body part if incorrect letter (If the letter does not exist on the word, a part of the hangman should be drawn)
-
+//           6.3 Print the correct guesses in the secret word.
 
         Scanner scanner = new Scanner(System.in);
+        Random rand = new Random();
 
         int userInput;
+        int badGuessesCount = 0;
+        int maxBadGuesses = 6;
 
         ArrayList<String> words = new ArrayList<String>();
         words.add("cat");
@@ -29,10 +35,15 @@ public class Main {
         words.add("apple");
         words.add("boots");
         words.add("laptop");
-        words.add("fish");
-        words.add("dog");
-        words.add("dog");
+        words.add("class");
+        words.add("cake");
+        words.add("bread");
 
+        String randomWord = words.get(rand.nextInt(words.size()));
+        ArrayList<Character> letters = new ArrayList<>();
+        for (int i = 0; i <randomWord.length(); i++){
+            letters.add(randomWord.charAt(i));
+        }
 
 
         System.out.println("Welcome to the HANGMAN game");
@@ -41,5 +52,59 @@ public class Main {
         System.out.println("2 - Exit game");
         userInput = scanner.nextInt();
         scanner.nextLine();
+
+        System.out.println(randomWord);
+
+        if (userInput == 1) {
+            System.out.println("Guess the first letter of the word");
+            System.out.println("Good luck :)");
+        }
+
+        char[] secretWord = new char[randomWord.length()];
+        for (int i = 0; i < randomWord.length(); i++) {
+            secretWord[i] = '_';
+            System.out.print("_ ");
+        }
+
+        do {
+            boolean letterFound = false;
+            System.out.println("\nChoose a LOWERCASE letter (a-z)");
+            String userLetter = scanner.nextLine();
+
+            for (int i = 0; i < randomWord.length(); i++) {
+                if (randomWord.charAt(i) == userLetter.charAt(0)) {
+                    secretWord[i] = randomWord.charAt(i);
+                    letterFound = true;
+                }
+            }
+            if (letterFound == false){
+                System.out.println("Wrong");
+            }
+
+            int correctLetters = 0;
+            for (int i = 0; i < secretWord.length; i++) {
+                System.out.print(secretWord[i] + " ");
+                if (secretWord[i] != '_') {
+                    correctLetters++;
+                }
+            }
+
+            if (correctLetters == randomWord.length()){
+                System.out.println("\nWon");
+                break;
+            }
+
+            if (!letters.contains(userLetter.charAt(0))){
+                badGuessesCount++;
+            }
+
+            if (maxBadGuesses == badGuessesCount){
+                System.out.println("Lost");
+                break;
+            }
+
+
+        } while (true) ;
+
     }
 }
