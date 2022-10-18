@@ -11,5 +11,6 @@ public class Main {
 //          5.2
 
 
+        System.out.println("Welcome to the Hangman game");
     }
 }
