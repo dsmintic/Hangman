@@ -29,7 +29,7 @@ public class Main {
         System.out.println("Choose an option");
         System.out.println("1 - Start new Hangman game");
         System.out.println("2 - Exit game");
-        System.out.println("------------------------------");
+        System.out.println("------------------------------------------------");
         userInput = scanner.nextInt();
         scanner.nextLine();
 
@@ -37,7 +37,9 @@ public class Main {
 
 
         if (userInput == 1) {
+            System.out.println("************************************************");
             System.out.println("Guess the first letter of the word. Good luck :)");
+            System.out.println("************************************************");
         }
 
         ArrayList<Character> usedLetter = new ArrayList<>();
@@ -48,7 +50,7 @@ public class Main {
             secretWord[i] = '_';
             System.out.print("_ ");
         }
-        //Converts the letters of a random word in an ArrayList so I can count wrong guesses
+        //Converts the letters of a random word in an ArrayList I can count wrong guesses
         ArrayList<Character> letters = new ArrayList<>();
         for (int i = 0; i <randomWord.length(); i++){
             letters.add(randomWord.charAt(i));
@@ -58,7 +60,8 @@ public class Main {
             printHangman(badGuessesCount);
 
             boolean letterFound = false;
-            System.out.print("\nChoose and enter a letter (a-z): ");
+            System.out.println("------------------------------------------------");
+            System.out.print("Choose and enter a letter (a-z): ");
             String userLetter = scanner.nextLine();
 
 
@@ -70,6 +73,7 @@ public class Main {
 
 
             if (usedLetter.contains(userLetter.charAt(0))){
+                System.out.println("------------------------------------------------");
                 System.out.println("You already used that letter.");
             } else {
                 usedLetter.add(userLetter.charAt(0));
@@ -82,7 +86,9 @@ public class Main {
                 }
 
                 if (letterFound == false) {
+                    System.out.println("------------------------------------------------");
                     System.out.println("You chose the wrong letter. Please try again.");
+                    System.out.println("------------------------------------------------");
                 }
                 if (!letters.contains(userLetter.charAt(0))) {
                     badGuessesCount++;
@@ -90,39 +96,38 @@ public class Main {
             }
 
             int correctLetters = 0;
-                for (int i = 0; i < secretWord.length; i++) {
-                    System.out.print(secretWord[i] + " ");
-                    if (secretWord[i] != '_') {
-                        correctLetters++;
-                    }
+            for (int i = 0; i < secretWord.length; i++) {
+                System.out.print(secretWord[i] + " ");
+                if (secretWord[i] != '_') {
+                    correctLetters++;
                 }
+            }
             System.out.println();
 
-                if (correctLetters == randomWord.length()) {
-                    System.out.println("\nCongratulations! You won the game!");
-                    break;
-                }
+            if (correctLetters == randomWord.length()) {
+                System.out.println("\nCongratulations! You won the game!");
+                break;
+            }
 
-
-                if (maxBadGuesses == badGuessesCount) {
-                    printHangman(badGuessesCount);
-                    System.out.println("\nYou used 6 attempts. Unfortunately you lost the game :(");
-                    break;
-                }
-
-            System.out.println("So far you have used these letters " + usedLetter);
-
+            if (maxBadGuesses == badGuessesCount) {
+                printHangman(badGuessesCount);
+                System.out.println("*********************************************************");
+                System.out.println("You used 6 attempts. Unfortunately you lost the game :(");
+                System.out.println("*********************************************************");
+                break;
+            }
+            Collections.sort(usedLetter);
+            System.out.println("\nSo far you have used these letters: " + usedLetter.toString().replace("[","").replace("]",""));
         } while (true);
     }
 
     public static void printHangman(int badGuessesCount){
 
         System.out.println();
-        System.out.println();
         System.out.println("-------");
         System.out.println("      |");
         if (badGuessesCount >= 1) {
-                System.out.println("      0");
+            System.out.println("      0");
         }
         if (badGuessesCount >= 2) {
             System.out.print("     \\");
@@ -130,21 +135,19 @@ public class Main {
                 System.out.println(" /");
             } else {
                 System.out.println();
-                }
             }
+        }
         if (badGuessesCount >= 4) {
             System.out.println("      |");
-            }
+        }
         if (badGuessesCount >= 5) {
             System.out.print("     /");
             if (badGuessesCount >= 6) {
                 System.out.println(" \\");
             } else {
                 System.out.println();
-                }
             }
-            System.out.println();
-
+        }
+        System.out.println();
     }
-
 }
