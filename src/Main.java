@@ -1,8 +1,5 @@
 import java.io.CharArrayReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -43,6 +40,8 @@ public class Main {
             System.out.println("Guess the first letter of the word. Good luck :)");
         }
 
+        ArrayList<Character> usedLetter = new ArrayList<>();
+
         //Converts letters of random words to underscore
         char[] secretWord = new char[randomWord.length()];
         for (int i = 0; i < randomWord.length(); i++) {
@@ -62,50 +61,61 @@ public class Main {
             System.out.print("\nChoose and enter a letter (a-z): ");
             String userLetter = scanner.nextLine();
 
-            for (int i = 0; i < randomWord.length(); i++) {
-                if (randomWord.charAt(i) == userLetter.charAt(0)) {
-                    secretWord[i] = randomWord.charAt(i);
-                    letterFound = true;
-                }
-            }
 
-            if (letterFound == false){
-                System.out.println("You chose the wrong letter. Please try again.");
+            while (userLetter.isEmpty() || !Character.isLetter(userLetter.charAt(0))) {
+                System.out.println("Please enter only letters from a to z: ");
+                userLetter = scanner.nextLine();
+            }
+            userLetter = userLetter.toLowerCase();
+
+
+            if (usedLetter.contains(userLetter.charAt(0))){
+                System.out.println("You already used that letter.");
+            } else {
+                usedLetter.add(userLetter.charAt(0));
+
+                for (int i = 0; i < randomWord.length(); i++) {
+                    if (randomWord.charAt(i) == userLetter.charAt(0)) {
+                        secretWord[i] = randomWord.charAt(i);
+                        letterFound = true;
+                    }
+                }
+
+                if (letterFound == false) {
+                    System.out.println("You chose the wrong letter. Please try again.");
+                }
+                if (!letters.contains(userLetter.charAt(0))) {
+                    badGuessesCount++;
+                }
             }
 
             int correctLetters = 0;
-            for (int i = 0; i < secretWord.length; i++) {
-                System.out.print(secretWord[i] + " ");
-                if (secretWord[i] != '_') {
-                    correctLetters++;
+                for (int i = 0; i < secretWord.length; i++) {
+                    System.out.print(secretWord[i] + " ");
+                    if (secretWord[i] != '_') {
+                        correctLetters++;
+                    }
                 }
-            }
+            System.out.println();
 
-            if (correctLetters == randomWord.length()){
-                System.out.println("\nCongratulations! You won the game!");
-                break;
-            }
+                if (correctLetters == randomWord.length()) {
+                    System.out.println("\nCongratulations! You won the game!");
+                    break;
+                }
 
-            if (!letters.contains(userLetter.charAt(0))){
-                badGuessesCount++;
-            }
 
-            if (maxBadGuesses == badGuessesCount){
-                printHangman(badGuessesCount);
-                System.out.println("\nYou used 6 attempts. Unfortunately you lost the game :(");
-                break;
-            }
+                if (maxBadGuesses == badGuessesCount) {
+                    printHangman(badGuessesCount);
+                    System.out.println("\nYou used 6 attempts. Unfortunately you lost the game :(");
+                    break;
+                }
+
+            System.out.println("So far you have used these letters " + usedLetter);
 
         } while (true);
     }
 
     public static void printHangman(int badGuessesCount){
-//-------
-//      |
-//      O
-//     \ /
-//      |
-//     / \
 
         System.out.println();
         System.out.println();
@@ -136,4 +146,5 @@ public class Main {
             System.out.println();
 
     }
+
 }
