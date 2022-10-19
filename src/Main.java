@@ -7,19 +7,6 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-//       TO DO:
-//       1. WORDS LIST - String ArrayList (so i can and more words latter)
-//       2. Varijabla - Bad guesses - int
-//       3. Random choose a word from ArrayList
-//       4. Do char Array for correst and incorrect letters
-//       5. Do main loop ( hmmm while or do/while - need to think)
-//          5.1 Hangman picture (6.2. do it in the end)
-//          5.2
-//        6. Methods (out of main (static)
-//           6.1 for wining a game
-//           6.2 display Hangman pic - add 1 body part if incorrect letter (If the letter does not exist on the word, a part of the hangman should be drawn)
-//           6.3 Print the correct guesses in the secret word.
-
         Scanner scanner = new Scanner(System.in);
         Random rand = new Random();
 
@@ -41,35 +28,39 @@ public class Main {
 
         String randomWord = words.get(rand.nextInt(words.size()));
 
-        System.out.println("Welcome to the game console");
+        System.out.println("\nWelcome to the game console");
         System.out.println("Choose an option");
         System.out.println("1 - Start new Hangman game");
         System.out.println("2 - Exit game");
+        System.out.println("------------------------------");
         userInput = scanner.nextInt();
         scanner.nextLine();
 
         System.out.println(randomWord);
 
+
         if (userInput == 1) {
             System.out.println("Guess the first letter of the word. Good luck :)");
         }
 
+        //Converts letters of random words to underscore
         char[] secretWord = new char[randomWord.length()];
         for (int i = 0; i < randomWord.length(); i++) {
             secretWord[i] = '_';
             System.out.print("_ ");
         }
-
+        //Converts the letters of a random word in an ArrayList so I can count wrong guesses
+        ArrayList<Character> letters = new ArrayList<>();
+        for (int i = 0; i <randomWord.length(); i++){
+            letters.add(randomWord.charAt(i));
+        }
 
         do {
+            printHangman(badGuessesCount);
+
             boolean letterFound = false;
-            System.out.println("\nChoose and enter a letter (a-z)");
+            System.out.print("\nChoose and enter a letter (a-z): ");
             String userLetter = scanner.nextLine();
-            while (!userLetter.matches("[a-zA-z]")){
-                System.out.println("Please enter only letters from a to z.");
-                userLetter = scanner.nextLine();
-            }
-            userLetter = userLetter.toLowerCase();
 
             for (int i = 0; i < randomWord.length(); i++) {
                 if (randomWord.charAt(i) == userLetter.charAt(0)) {
@@ -79,7 +70,7 @@ public class Main {
             }
 
             if (letterFound == false){
-                System.out.println("You chose the wrong letter.");
+                System.out.println("You chose the wrong letter. Please try again.");
             }
 
             int correctLetters = 0;
@@ -100,10 +91,49 @@ public class Main {
             }
 
             if (maxBadGuesses == badGuessesCount){
+                printHangman(badGuessesCount);
                 System.out.println("\nYou used 6 attempts. Unfortunately you lost the game :(");
                 break;
             }
 
         } while (true);
+    }
+
+    public static void printHangman(int badGuessesCount){
+//-------
+//      |
+//      O
+//     \ /
+//      |
+//     / \
+
+        System.out.println();
+        System.out.println();
+        System.out.println("-------");
+        System.out.println("      |");
+        if (badGuessesCount >= 1) {
+                System.out.println("      0");
+        }
+        if (badGuessesCount >= 2) {
+            System.out.print("     \\");
+            if (badGuessesCount >= 3) {
+                System.out.println(" /");
+            } else {
+                System.out.println();
+                }
+            }
+        if (badGuessesCount >= 4) {
+            System.out.println("      |");
+            }
+        if (badGuessesCount >= 5) {
+            System.out.print("     /");
+            if (badGuessesCount >= 6) {
+                System.out.println(" \\");
+            } else {
+                System.out.println();
+                }
+            }
+            System.out.println();
+
     }
 }
