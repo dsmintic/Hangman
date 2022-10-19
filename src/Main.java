@@ -40,15 +40,10 @@ public class Main {
         words.add("bread");
 
         String randomWord = words.get(rand.nextInt(words.size()));
-        ArrayList<Character> letters = new ArrayList<>();
-        for (int i = 0; i <randomWord.length(); i++){
-            letters.add(randomWord.charAt(i));
-        }
 
-
-        System.out.println("Welcome to the HANGMAN game");
+        System.out.println("Welcome to the game console");
         System.out.println("Choose an option");
-        System.out.println("1 - Start new game");
+        System.out.println("1 - Start new Hangman game");
         System.out.println("2 - Exit game");
         userInput = scanner.nextInt();
         scanner.nextLine();
@@ -56,8 +51,7 @@ public class Main {
         System.out.println(randomWord);
 
         if (userInput == 1) {
-            System.out.println("Guess the first letter of the word");
-            System.out.println("Good luck :)");
+            System.out.println("Guess the first letter of the word. Good luck :)");
         }
 
         char[] secretWord = new char[randomWord.length()];
@@ -66,10 +60,16 @@ public class Main {
             System.out.print("_ ");
         }
 
+
         do {
             boolean letterFound = false;
-            System.out.println("\nChoose a LOWERCASE letter (a-z)");
+            System.out.println("\nChoose and enter a letter (a-z)");
             String userLetter = scanner.nextLine();
+            while (!userLetter.matches("[a-zA-z]")){
+                System.out.println("Please enter only letters from a to z.");
+                userLetter = scanner.nextLine();
+            }
+            userLetter = userLetter.toLowerCase();
 
             for (int i = 0; i < randomWord.length(); i++) {
                 if (randomWord.charAt(i) == userLetter.charAt(0)) {
@@ -77,8 +77,9 @@ public class Main {
                     letterFound = true;
                 }
             }
+
             if (letterFound == false){
-                System.out.println("Wrong");
+                System.out.println("You chose the wrong letter.");
             }
 
             int correctLetters = 0;
@@ -90,7 +91,7 @@ public class Main {
             }
 
             if (correctLetters == randomWord.length()){
-                System.out.println("\nWon");
+                System.out.println("\nCongratulations! You won the game!");
                 break;
             }
 
@@ -99,12 +100,10 @@ public class Main {
             }
 
             if (maxBadGuesses == badGuessesCount){
-                System.out.println("Lost");
+                System.out.println("\nYou used 6 attempts. Unfortunately you lost the game :(");
                 break;
             }
 
-
-        } while (true) ;
-
+        } while (true);
     }
 }
